@@ -1,5 +1,8 @@
 let myLibrary = [];
-
+let buttonRead = document.querySelectorAll("#read");
+let buttonDelete = document.querySelectorAll("del");
+let buttonUnread = document.querySelectorAll("#unread");
+let buttonNew = document.querySelector(".new")
 function book (title, author, pages, read) {
   this.title = title;
   this.author = author;
@@ -9,17 +12,13 @@ function book (title, author, pages, read) {
     return `${title}, by ${author}, ${pages}, ${read}`
   }
 }
+const library = document.querySelector(".library");
 function addBookToLibrary(a, b, c, d) {
-  myLibrary.push(new book(a, b, c, d))  
+  myLibrary.push(new book(a, b, c, d));  
+  createCards()
 }
 
-//temporary books to add to library
-addBookToLibrary("titles1", "authors2", "69", "yes");
-addBookToLibrary("titles3", "authrodude", "420", "no");
-addBookToLibrary("tit235", "gudguy", "123", "no");
-//temporary books to add to library
 
-const library = document.querySelector(".library");
 function createCards() {
   let numBooks = myLibrary.length;
   library.innerHTML = "";
@@ -50,26 +49,109 @@ function populateCards(index) {
   pages.textContent = `Number of pages: ${myLibrary[index].pages}`;
   card.appendChild(pages);
   const read = document.createElement('div');
-  read.classList.add('read');
-  read.setAttribute('data-index', `${index}`);
-  read.textContent = `Read: ${myLibrary[index].read}`;
-  card.appendChild(read);
-  const buttons = document.createElement('div')
-  buttons.classList.add('buttons')
-  buttons.setAttribute('data-index', `${index}`)
-  buttons.textContent = `BUTTONS HERE`
-  card.appendChild(buttons)
-
+  if (myLibrary[index].read === true) {
+    read.classList.add('read');
+    read.setAttribute('data-index', `${index}`);
+    read.textContent = `I've read this book`;
+    card.appendChild(read);
+  }
+  if (myLibrary[index].read === false) {
+    read.classList.add('read');
+    read.setAttribute('data-index', `${index}`);
+    read.textContent = `I have not read this book`;
+    card.appendChild(read);
+  }
+  const buttons = document.createElement('div');
+  buttons.classList.add('buttons');
+  buttons.setAttribute('data-index', `${index}`);
+  card.appendChild(buttons);
+  const del = document.createElement('button');
+  del.setAttribute('data-index', `${index}`);
+  del.setAttribute('id', 'del');
+  del.innerText = "Delete";
+  buttons.appendChild(del);
+  if (myLibrary[index].read == true) {
+    const unread = document.createElement('button');
+    unread.setAttribute('data-index', `${index}`);
+    unread.setAttribute('id', 'unread');
+    unread.innerText = "Mark as unread";
+    buttons.appendChild(unread);
+  } if (myLibrary[index].read == false) {
+    const read = document.createElement('button');
+    read.setAttribute('data-index', `${index}`);
+    read.setAttribute('id', 'read');
+    read.innerText = "Mark as read";
+    buttons.appendChild(read);
+    
+  }
+  buttonRead = document.querySelectorAll("#read");
+  buttonDelete = document.querySelectorAll("#del");
+  buttonUnread = document.querySelectorAll("#unread");
+  
 }
 function blankCard() {
   const blank = document.createElement('div');
-  blank.classList.add('blankCard');
-  // blank.textContent = 'ADD BOOK TO LIBRARY HERE UNDERCONSTRUCTOIN.GIF'
-  library.appendChild(blank)
-  const newButton = document.createElement('div')
-  newButton.innerHTML = "<button>Add New Book</button>"
+  blank.classList.add('card');
+  blank.setAttribute("id", "blank")
+  library.appendChild(blank);
+  const newButton = document.createElement('div');
+  newButton.setAttribute("id", "newb")
+  newButton.innerHTML = "<button class='new'>Add New Book</button>";
   blank.appendChild(newButton);
+  buttonNew = document.querySelector(".new")
+  buttonNew.onclick = () => newBookForm();
 }
-//automaticaly populate cards, remove for production
-createCards()
-//automatically populate , remove pro forduction
+
+
+function newBookForm () {
+  const blank = document.getElementById("blank");
+  blank.remove();
+  const newForm = document.createElement('form');
+    newForm.classList.add('card');
+    newForm.setAttribute("id", "newBookForm");
+    library.appendChild(newForm);
+  const titleEntry = document.createElement('div');
+    titleEntry.classList.add('inputField')
+    titleEntry.setAttribute("id", "titleEntry")
+    titleEntry.innerHTML = `<label for='title' id='titleEntry'>Title:</label>
+      <input type="text" id="titleField" name="title">`
+    newForm.appendChild(titleEntry);
+  const authorEntry = document.createElement('div');
+    authorEntry.classList.add('inputField')
+    authorEntry.setAttribute('id', "authorEntry")
+    authorEntry.innerHTML = `<label for='author' id='authorEntry'>Author:</label>
+      <input type="text" id="authorField" name="author">`
+    newForm.appendChild(authorEntry);
+  const pagesEntry = document.createElement('div');
+    pagesEntry.classList.add('inputField')
+    pagesEntry.setAttribute("id", "pagesEntry")
+    pagesEntry.innerHTML = `<label for='pages' id='pagesEntry'>Pages:</label>
+      <input type="text" id="pagesField" name="pages">`
+    newForm.appendChild(pagesEntry);
+  const readEntry = document.createElement('div');
+    readEntry.classList.add('inputField')
+    readEntry.setAttribute("id", "readEntry")
+    readEntry.innerHTML = `<label for='read' id='readEntry'>Check if read:
+      </label><input type="checkbox" id="readCheckbox" value="true" name="read">`
+    newForm.appendChild(readEntry);
+  const buttonSubmit = document.createElement('div');
+    buttonSubmit.classList.add('.buttons')
+    buttonSubmit.setAttribute("id", "buttonSubmit")
+    buttonSubmit.innerHTML = `<button onclick="submitForm()">Submit</button>`
+    newForm.appendChild(buttonSubmit);
+}
+function submitForm() {
+  let titleField = document.querySelector('#titleField')
+  let authorField = document.querySelector("#authorField")
+  let pagesField = document.querySelector("#pagesField")
+  let readCheckbox = document.querySelector("#readCheckbox")
+  addBookToLibrary(titleField.value, authorField.value, pagesField.value, readCheckbox.checked)
+}
+    //automaticaly populate cards, remove for production
+    //temporary books to add to library
+    addBookToLibrary("titles1", "authors2", "69", false);
+    addBookToLibrary("titles3", "authrodude", "420", true);
+    addBookToLibrary("tit235", "gudguy", "123", false);
+    createCards()
+    //temporary books to add to library
+    //automatically populate , remove pro forduction

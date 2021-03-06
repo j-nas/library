@@ -2,6 +2,7 @@ body {
   margin: 2rem;
   font: 12px system-ui;
 }
+
 .library {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -13,13 +14,19 @@ body {
   background: darkgray;
   display: grid;
   grid-template-rows: 1rem 1rem 1rem 1rem 2rem;
+  grid-gap: 1px;
 }
-.blankCard {
+#blank {
   display: grid;
   padding: 1rem;
   border-radius: 1rem;
   background: darkgray;
-  place-items: center;
+  place-content: center; 
+}
+#newb {
+  grid-row-start: 5;
+  grid-column-start: -1;
+  align-self: center;
 }
 .buttons {
   padding-top: 0.5rem;
@@ -33,5 +40,24 @@ button {
   font: 12px, system-ui;
 }
 button:hover {
-  border-style:double;
+  border-style: double;
+}
+input {
+  border-style: none;
+  justify-self: right;
+  height: .8rem;
+  width: 160px;
+}
+input:focus {
+  border-style: none;
+  outline-style: none;
+}
+.inputField {
+  display:grid;
+  grid-auto-flow: column;
+}
+#buttonSubmit {
+  display: grid;
+  align-content: center;
+  justify-content: center;
 }
