@@ -25,6 +25,9 @@ function createCards() {
   for (let i = 0; i < numBooks; i++) {
     populateCards(`${i}`);
   }
+  deleteListener()
+  unreadListener()
+  readListener()
   blankCard()
 }
 
@@ -84,9 +87,6 @@ function populateCards(index) {
     buttons.appendChild(read);
     
   }
-  buttonRead = document.querySelectorAll("#read");
-  buttonDelete = document.querySelectorAll("#del");
-  buttonUnread = document.querySelectorAll("#unread");
   
 }
 function blankCard() {
@@ -107,51 +107,82 @@ function newBookForm () {
   const blank = document.getElementById("blank");
   blank.remove();
   const newForm = document.createElement('form');
-    newForm.classList.add('card');
-    newForm.setAttribute("id", "newBookForm");
-    library.appendChild(newForm);
+  newForm.classList.add('card');
+  newForm.setAttribute("id", "newBookForm");
+  newForm.setAttribute("autocomplete", "off")
+  library.appendChild(newForm);
   const titleEntry = document.createElement('div');
-    titleEntry.classList.add('inputField')
-    titleEntry.setAttribute("id", "titleEntry")
-    titleEntry.innerHTML = `<label for='title' id='titleEntry'>Title:</label>
-      <input type="text" id="titleField" name="title">`
-    newForm.appendChild(titleEntry);
+  titleEntry.classList.add('inputField')
+  titleEntry.setAttribute("id", "titleEntry")
+  titleEntry.innerHTML = `<label for='title' id='titleEntry'>Title:</label>
+  <input type="text" id="titleField" name="title">`
+  newForm.appendChild(titleEntry);
   const authorEntry = document.createElement('div');
-    authorEntry.classList.add('inputField')
-    authorEntry.setAttribute('id', "authorEntry")
-    authorEntry.innerHTML = `<label for='author' id='authorEntry'>Author:</label>
-      <input type="text" id="authorField" name="author">`
-    newForm.appendChild(authorEntry);
+  authorEntry.classList.add('inputField')
+  authorEntry.setAttribute('id', "authorEntry")
+  authorEntry.innerHTML = `<label for='author' id='authorEntry'>Author:</label>
+  <input type="text" id="authorField" name="author">`
+  newForm.appendChild(authorEntry);
   const pagesEntry = document.createElement('div');
-    pagesEntry.classList.add('inputField')
-    pagesEntry.setAttribute("id", "pagesEntry")
-    pagesEntry.innerHTML = `<label for='pages' id='pagesEntry'>Pages:</label>
-      <input type="text" id="pagesField" name="pages">`
-    newForm.appendChild(pagesEntry);
+  pagesEntry.classList.add('inputField')
+  pagesEntry.setAttribute("id", "pagesEntry")
+  pagesEntry.innerHTML = `<label for='pages' id='pagesEntry'>Pages:</label>
+  <input type="text" id="pagesField" name="pages">`
+  newForm.appendChild(pagesEntry);
   const readEntry = document.createElement('div');
-    readEntry.classList.add('inputField')
-    readEntry.setAttribute("id", "readEntry")
-    readEntry.innerHTML = `<label for='read' id='readEntry'>Check if read:
-      </label><input type="checkbox" id="readCheckbox" value="true" name="read">`
-    newForm.appendChild(readEntry);
+  readEntry.classList.add('inputField')
+  readEntry.setAttribute("id", "readEntry")
+  readEntry.innerHTML = `<label for='read' id='readEntry'>Check if read:
+  </label><input type="checkbox" id="readCheckbox" value="true" name="read">`
+  newForm.appendChild(readEntry);
   const buttonSubmit = document.createElement('div');
-    buttonSubmit.classList.add('.buttons')
-    buttonSubmit.setAttribute("id", "buttonSubmit")
-    buttonSubmit.innerHTML = `<button onclick="submitForm()">Submit</button>`
-    newForm.appendChild(buttonSubmit);
+  buttonSubmit.classList.add('.buttons')
+  buttonSubmit.setAttribute("id", "buttonSubmit")
+  buttonSubmit.innerHTML = `<button onclick="submitForm()">Submit</button>`
+  newForm.appendChild(buttonSubmit);
 }
 function submitForm() {
-  let titleField = document.querySelector('#titleField')
-  let authorField = document.querySelector("#authorField")
-  let pagesField = document.querySelector("#pagesField")
-  let readCheckbox = document.querySelector("#readCheckbox")
-  addBookToLibrary(titleField.value, authorField.value, pagesField.value, readCheckbox.checked)
+  let t = document.querySelector('#titleField')
+  let a = document.querySelector("#authorField")
+  let p = document.querySelector("#pagesField")
+  let r = document.querySelector("#readCheckbox")
+  addBookToLibrary(t.value, a.value, p.value, r.checked)
 }
-    //automaticaly populate cards, remove for production
+function deleteListener() {
+  buttonDelete = document.querySelectorAll("#del");
+  buttonDelete.forEach((button) => {
+    button.addEventListener('click', () => {
+      myLibrary.splice(button.dataset.index, 1)
+      createCards()
+    })
+  })
+}
+//event listener for mark as unread button
+
+function unreadListener() {
+  buttonUnread = document.querySelectorAll("#unread");
+  buttonUnread.forEach((button) => {
+    button.addEventListener('click', () => {
+      myLibrary[button.dataset.index]["read"] = false;
+    })
+  })
+}
+// event listener for mark as read 
+function readListener() {
+  buttonRead = document.querySelectorAll("#read");
+  buttonRead.forEach((button) => {
+    button.addEventListener('click', (e) => {
+      myLibrary[button.dataset.index]["read"] = true;
+      createCards()
+    })
+}
+
+//automaticaly populate cards, remove for production
     //temporary books to add to library
     addBookToLibrary("titles1", "authors2", "69", false);
-    addBookToLibrary("titles3", "authrodude", "420", true);
-    addBookToLibrary("tit235", "gudguy", "123", false);
+    addBookToLibrary("titles2", "authrodude", "420", true);
+    addBookToLibrary("tit3", "gudguy", "123", false);
+    addBookToLibrary("tit4", "gudguy", "123", true);
     createCards()
     //temporary books to add to library
     //automatically populate , remove pro forduction
