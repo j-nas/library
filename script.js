@@ -157,8 +157,7 @@ function deleteListener() {
     })
   })
 }
-//event listener for mark as unread button
-
+addBookToLibrary("sasf", "1234124", "123123", true)
 function unreadListener() {
   buttonUnread = document.querySelectorAll("#unread");
   buttonUnread.forEach((button) => {
@@ -167,7 +166,6 @@ function unreadListener() {
     })
   })
 }
-// event listener for mark as read 
 function readListener() {
   buttonRead = document.querySelectorAll("#read");
   buttonRead.forEach((button) => {
@@ -175,14 +173,5 @@ function readListener() {
       myLibrary[button.dataset.index]["read"] = true;
       createCards()
     })
+})
 }
-
-//automaticaly populate cards, remove for production
-    //temporary books to add to library
-    addBookToLibrary("titles1", "authors2", "69", false);
-    addBookToLibrary("titles2", "authrodude", "420", true);
-    addBookToLibrary("tit3", "gudguy", "123", false);
-    addBookToLibrary("tit4", "gudguy", "123", true);
-    createCards()
-    //temporary books to add to library
-    //automatically populate , remove pro forduction
