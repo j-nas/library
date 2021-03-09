@@ -1,8 +1,4 @@
 let myLibrary = [];
-let buttonRead = document.querySelectorAll("#read");
-let buttonDelete = document.querySelectorAll("del");
-let buttonUnread = document.querySelectorAll("#unread");
-let buttonNew = document.querySelector(".new")
 function book (title, author, pages, read) {
   this.title = title;
   this.author = author;
@@ -157,12 +153,12 @@ function deleteListener() {
     })
   })
 }
-addBookToLibrary("sasf", "1234124", "123123", true)
 function unreadListener() {
   buttonUnread = document.querySelectorAll("#unread");
   buttonUnread.forEach((button) => {
     button.addEventListener('click', () => {
       myLibrary[button.dataset.index]["read"] = false;
+      createCards()
     })
   })
 }
@@ -175,3 +171,4 @@ function readListener() {
     })
 })
 }
+if (myLibrary.length == 0) {blankCard()}
